@@ -8,7 +8,7 @@ interface DrugInfo {
 }
 
 const App: React.FC = () => {
-  const genAI = new GoogleGenerativeAI("AIzaSyD4w80Q7GL1TyOB3qIzdtk5IAWrvhIyoVw");
+  const genAI = new GoogleGenerativeAI("AIzaSyCnaIFLcAK7MG3roR1yYsiLGMCq8AmTOEI");
   const model = genAI.getGenerativeModel({ model: "gemini-pro" });
   const [drug1, setDrug1] = useState("");
   const [drug2, setDrug2] = useState("");
