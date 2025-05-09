@@ -94,7 +94,7 @@ const App: React.FC = () => {
     <div className="app-container">
       <div className="content-wrapper">
         <div className="card">
-          <h1 className="title">Drug Interaction Checker</h1>
+          <h1 className="title">PharmaCheck</h1>
 
           <div className="input-container">
             <input
