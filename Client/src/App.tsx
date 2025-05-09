@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import './App.css';
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 interface DrugInfo {
   IUPACName: string;
@@ -8,7 +8,8 @@ interface DrugInfo {
 }
 
 const App: React.FC = () => {
-  const ai = new GoogleGenAI({ apiKey: "AIzaSyD4w80Q7GL1TyOB3qIzdtk5IAWrvhIyoVw" });
+  const genAI = new GoogleGenerativeAI("AIzaSyD4w80Q7GL1TyOB3qIzdtk5IAWrvhIyoVw");
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
   const [drug1, setDrug1] = useState("");
   const [drug2, setDrug2] = useState("");
   const [age, setAge] = useState("");
@@ -23,10 +24,10 @@ const App: React.FC = () => {
   const [height, setHeight] = useState<string | null>(null);
 
   async function getAi() {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: `Find and describe any negative consquences/interactions for taking the following medical drugs together in the human body. The patient is ${age} years old. Discuss the potential side effects, interactions, other negative consequences, extra considerations (time factor is a major one), and other recommendations. Also try to make everything consice and easy to read and understand (no Tables). TALK MORE ABOUT THE CHEMISTRY. Make sure to also discuss the exact chemical reactions that happen in your body detailly. Talk more about the chemistry, while also talking Moderately about the biological reactions in the body. Make it very concise and short. Remember to make it concise: ${drug1} and ${drug2}. The patient is ${gender} and weighs ${weight} pounds and is ${height} inches tall.`,
-    });
+    const result = await model.generateContent(
+      `Find and describe any negative consquences/interactions for taking the following medical drugs together in the human body. The patient is ${age} years old. Discuss the potential side effects, interactions, other negative consequences, extra considerations (time factor is a major one), and other recommendations. Also try to make everything consice and easy to read and understand (no Tables). TALK MORE ABOUT THE CHEMISTRY. Make sure to also discuss the exact chemical reactions that happen in your body detailly. Talk more about the chemistry, while also talking Moderately about the biological reactions in the body. Make it very concise and short. Remember to make it concise: ${drug1} and ${drug2}. The patient is ${gender} and weighs ${weight} pounds and is ${height} inches tall.`
+    );
+    const response = await result.response;
     const cleanedResponse = response.text?.replace(/\*/g, '') || null;
     setResponse(cleanedResponse);
   }
